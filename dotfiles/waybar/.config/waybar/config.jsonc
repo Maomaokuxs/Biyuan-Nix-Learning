@@ -1,0 +1,124 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 36,
+    "spacing": 4,
+    "modules-left": [
+        "custom/nixos",
+        "niri/workspaces",
+        "niri/window"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "pulseaudio",
+        "backlight",
+	"custom/backlight",
+        "network",
+        "battery",
+        "tray",
+        "custom/power"
+    ],
+    
+    // ==========================================
+    // 左侧模块
+    // ==========================================
+    "custom/nixos": {
+        "format": "<span font='Iosevka Nerd Font 16'> </span>",
+        "on-click": "rofi -show drun", 
+        "tooltip": false
+    },
+
+    "niri/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "format": " ", 
+        "format-icons": {
+            "default": " ",
+            "active": " "
+        }
+    },
+
+    // ==========================================
+    // 右侧控制模块
+    // ==========================================
+    "pulseaudio": {
+        "format": "{volume}%  <span font='Iosevka Nerd Font 14'>{icon}</span>",
+        "format-muted": "Muted  <span font='Iosevka Nerd Font 14'></span>",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "scroll-step": 5
+    },
+
+    "backlight": {
+        "format": "{percent}% <span font='Iosevka Nerd Font 14'>{icon}</span>",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "on-scroll-up": "brightnessctl set +5%",
+        "on-scroll-down": "brightnessctl set 5%-",
+        "on-click": "brightnessctl set 50%"
+    },
+
+    "network": {
+        "format-wifi": "{essid}  <span font='Iosevka Nerd Font 14'>󰤨</span>",
+        "format-ethernet": "ETH  <span font='Iosevka Nerd Font 14'>󰈀</span>",
+        "format-disconnected": "Offline  <span font='Iosevka Nerd Font 14'>󰤮</span>"
+    },
+
+    "battery": {
+        "states": {
+            "full": 100,
+            "good": 80,
+            "normal": 50,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}%  <span font='Iosevka Nerd Font 14'>{icon}</span>",
+        "format-charging": "{capacity}%  <span font='Iosevka Nerd Font 14'>󰂄</span>",
+        "format-plugged": "Plugged  <span font='Iosevka Nerd Font 14'>󰚥</span>",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+
+    "custom/power": {
+        "format": "<span font='Iosevka Nerd Font 14'></span>",
+        "on-click": "wlogout",
+        "tooltip": false
+    }
+},
+
+    "clock": {
+        // 默认显示：时钟图标 + 时间
+        "format": "<span font='Iosevka Nerd Font 14' color='#cba6f7'></span> {:%H:%M}",
+        // 点击后展开：日历图标 + 日期
+        "format-alt": "<span font='Iosevka Nerd Font 14' color='#cba6f7'></span> {:%Y-%m-%d  %H:%M}",
+        // 极其惊艳的高级日历浮窗配置
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode"          : "month",
+            "mode-mon-col"  : 3,
+            "weeks-pos"     : "right",
+            "on-scroll"     : 1,
+            "format": {
+                "months":     "<span color='#cdd6f4'><b>{}</b></span>",
+                "days":       "<span color='#a6adc8'>{}</span>",
+                "weeks":      "<span color='#f5c2e7'><b>W{}</b></span>",
+                "weekdays":   "<span color='#f9e2af'><b>{}</b></span>",
+                "today":      "<span color='#f38ba8'><b><u>{}</u></b></span>"
+            }
+        }
+    },
+
+    "custom/backlight": {
+        "format": "{percentage}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "return-type": "json",
+        "exec": "val=$(ddcutil getvcp 10 --brief 2>/dev/null | awk '{print $4}'); echo \"{\\\"percentage\\\": $val}\"",
+        "on-scroll-up": "ddcutil setvcp 10 + 10",
+        "on-scroll-down": "ddcutil setvcp 10 - 10",
+        "on-click": "ddcutil setvcp 10 50",
+        "interval": 30,
+        "tooltip": false
+    },

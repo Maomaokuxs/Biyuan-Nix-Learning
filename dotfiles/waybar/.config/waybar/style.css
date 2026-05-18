@@ -1,0 +1,169 @@
+/* ========================================================
+ * 👑 全局底座：绝对固定物理尺寸，拒绝任何抖动！
+ * ======================================================== */
+#clock,
+#pulseaudio, 
+#network, 
+#battery, 
+#tray, 
+#backlight, 
+#custom-nixos,
+#custom-backlight,
+#custom-power {
+    background-color: #313244;
+    border-radius: 6px;
+    margin: 6px 4px;
+    padding: 0 12px 0 10px; /* 物理内边距：永久锁死 */
+    border-left-width: 4px; /* 物理边框厚度：永久锁死 */
+    border-left-style: solid; /* 边框样式：常驻显示 */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ========================================================
+ * 各模块专属色块常驻，及无损向内延伸动画
+ * 原理：用 inset (内阴影) 在不改变物理宽度的情况下，向内部“画”出向内延伸的色块
+ * ======================================================== */
+
+/* 1. 时钟 (跟随壁纸强调色) */
+#clock { border-left-color: @accent; }
+#clock:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 4px 0 0 @accent; /* 悬停时，色块无损向内增厚 4px */
+}
+
+/* 2. 电池 */
+/* 2. 电池电量多级色彩映射 */
+/* 默认电量 (50%~80%)：清爽的蓝色 */
+#battery { border-left-color: #89b4fa; }
+#battery:hover { background-color: rgba(137, 180, 250, 0.15); box-shadow: inset 4px 0 0 #89b4fa; }
+
+/* 满电或高电量 (80%~100%)：健康的绿色 */
+#battery.full, #battery.good { border-left-color: #a6e3a1; }
+#battery.full:hover, #battery.good:hover { background-color: rgba(166, 227, 161, 0.15); box-shadow: inset 4px 0 0 #a6e3a1; }
+
+/* 警告电量 (15%~30%)：焦虑的黄色 */
+#battery.warning { border-left-color: #f9e2af; color: #f9e2af; }
+#battery.warning:hover { background-color: rgba(249, 226, 175, 0.15); box-shadow: inset 4px 0 0 #f9e2af; }
+
+/* 危险电量 (<15%)：底座泛红的红色警报 */
+#battery.critical { border-left-color: #f38ba8; color: #f38ba8; background-color: rgba(243, 139, 168, 0.1); }
+#battery.critical:hover { background-color: rgba(243, 139, 168, 0.25); box-shadow: inset 4px 0 0 #f38ba8; }
+
+/* 充电状态：调用壁纸引擎的灵魂强调色 */
+#battery.charging, #battery.plugged { border-left-color: @accent; color: @accent; }
+#battery.charging:hover, #battery.plugged:hover { background-color: rgba(255, 255, 255, 0.08); box-shadow: inset 4px 0 0 @accent; }
+/* 3. 网络 */
+#network { border-left-color: #89b4fa; }
+#network:hover { background-color: rgba(137, 180, 250, 0.15); box-shadow: inset 4px 0 0 #89b4fa; }
+#network.disconnected { border-left-color: #f38ba8; color: #f38ba8; }
+#network.disconnected:hover { background-color: rgba(243, 139, 168, 0.15); box-shadow: inset 4px 0 0 #f38ba8; }
+
+/* 4. 音频 */
+#pulseaudio { border-left-color: #fab387; }
+#pulseaudio:hover { background-color: rgba(250, 179, 135, 0.15); box-shadow: inset 4px 0 0 #fab387; }
+#pulseaudio.muted { border-left-color: #45475a; color: #a6adc8; }
+#pulseaudio.muted:hover { background-color: rgba(69, 71, 90, 0.3); box-shadow: inset 4px 0 0 #45475a; }
+
+/* 5. 亮度 */
+#backlight { border-left-color: #f9e2af; }
+#backlight:hover { background-color: rgba(249, 226, 175, 0.15); box-shadow: inset 4px 0 0 #f9e2af; }
+
+/* 6. 系统托盘 */
+#tray { border-left-color: #a6adc8; }
+#tray:hover { background-color: rgba(166, 173, 200, 0.15); box-shadow: inset 4px 0 0 #a6adc8; }
+
+/* 7. 关机键 (独立修正圆角和间距，同样锁死尺寸) */
+#custom-power {
+    border-left-color: #f38ba8;
+    padding: 0 16px 0 14px; 
+    border-radius: 6px 12px 12px 6px; 
+}
+#custom-power:hover {
+    background-color: rgba(243, 139, 168, 0.15);
+    box-shadow: inset 4px 0 0 #f38ba8;
+}
+
+/* ========================================================
+ * 8. NixOS 图标 (独立悬浮无底座)
+ * ======================================================== */
+#custom-nixos {
+    background-color: transparent;
+    border-left: none; 
+    padding: 0 12px;
+    color: @accent;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+#custom-nixos:hover {
+    text-shadow: 0 0 12px @accent; /* 发光增强 */
+}
+
+/* ========================================================
+ * Niri 工作区：动态果冻胶囊指示器
+ * ======================================================== */
+
+/* 给工作区一个和右侧模块高度对齐的底座 */
+#workspaces button {
+    color: transparent; /* 隐藏原本的文字 */
+    min-height: 12px;
+    min-width: 12px;    /* 默认状态下是一个完美的小圆点 */
+    border-radius: 12px;
+    background-color: #45475a;
+    margin: 10px 5px;   /* 上下挤压，让圆点悬浮在状态栏中间 */
+    padding: 0;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* 丝滑形变动画 */
+
+}
+
+#workspaces button.active {
+    min-width: 35px;    /* 选中时，瞬间拉长变成一颗胶囊！ */
+    background-color: #cba6f7;
+    box-shadow: 0 0 8px rgba(203, 166, 247, 0.5); /* 加上浅紫色霓虹发光 */
+}
+
+/* ========================================================
+ * 2. 实体窗口任务栏：底部高亮指示
+ * ======================================================== */
+#taskbar {
+    background-color: #313244;
+    border-radius: 6px;
+    margin: 6px 4px;
+    padding: 0 4px;
+}
+
+/* ========================================================
+ * 居中时间模块：赛博胶囊 (Cyber Pill)
+ * ======================================================== */
+#clock {
+    background-color: #313244; /* 沉稳的默认底色 */
+    color: #cdd6f4;
+    font-weight: 900; /* 时间需要加粗，更有数字感 */
+    border-radius: 16px; /* 极度圆润，完美匹配你的圆点/胶囊形状 */
+    padding: 0 16px; /* 左右留足呼吸空间 */
+    margin: 4px 0; /* 上下留白，使其悬浮在状态栏中 */
+    
+    /* 核心魔法：复刻你工作区的同款丝滑形变动画！ */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+    
+    /* 预留透明边框，防止悬停加边框时发生抖动 */
+    border: 2px solid transparent; 
+}
+
+/* 悬停状态：如同工作区被激活，瞬间注入强调色与霓虹光晕 */
+#clock:hover {
+    background-color: transparent;
+    color: #cba6f7; /* 字体变成同款浅紫色 */
+    border-color: #cba6f7; /* 浮现紫色边框框住胶囊 */
+    
+    /* 同款霓虹发光：字体发光 + 边框外发光 + 边框内发光 */
+    text-shadow: 0 0 5px rgba(203, 166, 247, 0.6); 
+    box-shadow: 0 0 8px rgba(203, 166, 247, 0.5), inset 0 0 4px rgba(203, 166, 247, 0.3); 
+}
+
+
+/* 5. 外接显示器亮度：阳光黄 LED 灯带 */
+#custom-backlight { border-left-color: #f9e2af; }
+#custom-backlight:hover { 
+    background-color: rgba(249, 226, 175, 0.15); 
+    box-shadow: inset 4px 0 0 #f9e2af; 
+}

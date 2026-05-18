@@ -1,0 +1,33 @@
+palette = "hellwal"
+
+format = """$os$username$directory$git_branch$git_status$time$line_break$character"""
+
+[os]
+disabled = false
+# 👑 注意看：直接写 accent，不需要任何 ${palette.} 包裹！
+format = "[](accent)[ ](bg:accent fg:#0b0b0b)"
+
+[username]
+show_always = true
+# 完美衔接，全部使用纯变量名
+format = "[ $user ](bg:accent fg:#0b0b0b)[](fg:accent bg:muted)"
+
+[directory]
+format = "[ $path ](bg:muted fg:#ffffff)"
+truncation_length = 3
+
+[git_branch]
+symbol = ""
+format = "[ $symbol $branch ](fg:accent bg:muted)"
+
+[git_status]
+format = "[$all_status$ahead_behind](fg:accent bg:muted)"
+
+[time]
+disabled = false
+format = "[ 󱎫 $time ](bg:muted fg:#ffffff)[ ](fg:muted)"
+
+[character]
+# 箭头符号也直接引用 accent
+success_symbol = '[❯](bold fg:accent)'
+error_symbol = '[❯](bold fg:red)'

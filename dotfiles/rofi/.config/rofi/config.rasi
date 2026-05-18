@@ -1,0 +1,9 @@
+configuration {
+    show-icons: true;
+    
+    /* 恢复最经典的四个原生模式 */
+    modes: [ drun, run, keys, window ];
+}
+
+/* 保留这个引入，防止 Rofi 因为找不到皮肤而崩溃 */
+@theme "/home/biyuan/.config/rofi/themes/current.rasi"

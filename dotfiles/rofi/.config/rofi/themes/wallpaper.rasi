@@ -1,0 +1,98 @@
+
+@import "~/.cache/by-mgr/hellwal/color-rofi.rasi"
+
+/*
+ * 极致贴合 16:9 宽屏网格版 (运用负边距黑魔法)
+ */
+
+configuration {
+    show-icons: true;
+}
+
+* {
+    font: "JetBrains Mono Bold 15";
+    background-color: transparent;
+    text-color: #cdd6f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* 适配 4列×3行 的长方形卡片，调整窗口整体宽度 */
+window {
+    width: 1140px;  
+    height: 640px;  
+    background-color: #1e1e2e;
+    border: 2px solid;
+    border-color: #cba6f7;
+    border-radius: 16px;
+    padding: 25px;
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    background-color: #313244;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 0px 0px 20px 0px;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    text-color: #cba6f7;
+    font: "JetBrains Mono Bold 15";
+    margin: 0px 15px 0px 0px;
+}
+
+entry {
+    placeholder: "输入目录或文件名过滤壁纸...";
+    placeholder-color: #6c7086;
+}
+
+listview {
+    columns: 4;        
+    lines: 3;          
+    cycle: true;
+    scrollbar: false;  
+    spacing: 18px;     
+    fixed-columns: true;
+}
+
+/* ================================================= */
+/* 卡片容器：提前布好隐形边框 */
+/* ================================================= */
+element {
+    orientation: vertical;  
+    padding: 0px;            
+    border: 3px solid;       
+    border-color: transparent; 
+    border-radius: 12px;     
+    background-color: transparent; 
+    children: [ element-icon ]; 
+}
+
+/* 选中时点亮边框，且绝对没有多余的背景底色 */
+element selected {
+    border-color: #cba6f7;   
+}
+
+/* ================================================= */
+/* 终极黑魔法：负边距暴力切割透明死角 */
+/* ================================================= */
+element-icon {
+    size: 256px;            /* Rofi 强行生成的 256x256 正方形画布 */
+    
+    /* 
+     * 核心魔法所在：
+     * 由于图片实际高 144px，我们用负边距强行收缩容器的上下边界。
+     * (256 - 144) / 2 = 56px。
+     * 这一步会让外框直接“咬”在真实的图片边缘上！
+     */
+    margin: -56px 0px;      
+    
+    horizontal-align: 0.5;  
+    vertical-align: 0.5;
+    border-radius: 9px;     /* 图片自带圆角，与边框呼应 */
+}

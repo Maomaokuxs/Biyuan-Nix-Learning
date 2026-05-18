@@ -1,0 +1,109 @@
+@import "~/.cache/by-mgr/hellwal/color-rofi.rasi"
+
+/*
+ * 极简聚焦模式 (Raycast / Spotlight 风格)
+ * 适配 Rofi Wayland 2.0+
+ */
+
+* {
+    /* 锁定你的雾纱黑体 */
+    font: "LXGW Neo XiHei 13";
+
+    /* Catppuccin Mocha 调色板精简版 */
+    bg-base:      #1e1e2e; /* 极暗底色 */
+    bg-surface:   #313244; /* 分割线底色 */
+    bg-hover:     #cba6f7; /* 标志性的浅紫高亮 (Mauve) */
+    
+    fg-primary:   #cdd6f4; /* 主文本 */
+    fg-secondary: #a6adc8; /* 占位符次要文本 */
+    fg-inverse:   #11111b; /* 被选中时的反色文本 */
+    
+    border-color: #cba6f7; 
+    
+    background-color: transparent;
+    text-color:       @fg-primary;
+}
+
+/* 核心窗口布局 */
+window {
+    transparency:     "real";
+    location:         center;
+    anchor:           center;
+    /* 魔法调整：让窗口稍微偏上方一点（-12%），这是人眼视觉最舒服的聚焦区域 */
+    y-offset:         -12%; 
+    width:            720px;
+    
+    background-color: @bg-base;
+    border:           2px solid;
+    border-color:     @border-color;
+    border-radius:    16px; /* 更加现代的大圆角 */
+}
+
+/* 纵向排列输入框和列表 */
+mainbox {
+    children: [ inputbar, listview ];
+    spacing:  0px;
+}
+
+/* 顶部输入区 */
+inputbar {
+    padding:          22px 25px;
+    background-color: @bg-base;
+    children:         [ prompt, entry ];
+    /* 底部一条极细的暗色分割线，取代以前的区块色差 */
+    border-bottom:    1px solid;
+    border-color:     @bg-surface;
+}
+
+prompt {
+    text-color:       @bg-hover;
+    font:             "LXGW Neo XiHei Bold 14";
+    margin:           0px 15px 0px 0px;
+}
+
+entry {
+    placeholder:       "键入以搜索应用或命令...";
+    placeholder-color: @fg-secondary;
+    font:              "LXGW Neo XiHei 14";
+}
+
+/* 下方结果列表区 */
+listview {
+    padding:          15px;
+    lines:            7; /* 默认展示 7 行结果 */
+    columns:          1;
+    spacing:          8px;
+    cycle:            true;
+    dynamic:          true;
+    /* 追求极致清爽，彻底干掉碍眼的侧边滚动条 */
+    scrollbar:        false; 
+}
+
+/* 单个列表项 */
+element {
+    padding:          12px 15px;
+    border-radius:    10px;
+    spacing:          15px;
+    children:         [ element-icon, element-text ];
+}
+
+/* 正常状态隐形 */
+element normal.normal, element alternate.normal {
+    background-color: transparent;
+}
+
+/* 选中状态极其鲜明的高亮与反色文字 */
+element selected.normal {
+    background-color: @bg-hover;
+    text-color:       @fg-inverse;
+}
+
+element-icon {
+    size:             24px;
+    vertical-align:   0.5;
+}
+
+element-text {
+    vertical-align:   0.5;
+    text-color:       inherit;
+}
