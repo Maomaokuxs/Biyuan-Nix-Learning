@@ -1,0 +1,72 @@
+/* =================================================
+ * 🎨 Rofi 电源菜单专属样式 (贴合 Hellwal 色彩)
+ * ================================================= */
+
+configuration {
+    show-icons: false;
+    font: "Iosevka Nerd Font 16";
+    hover-select: true; /* 允许鼠标悬停选择 */
+    me-select-entry: "";
+    me-accept-entry: "MousePrimary";
+}
+
+/* 全局颜色变量定义 */
+* {
+    bg-color:       #05030e; /* 极深邃底色 */
+    bg-alt:         #15103c; /* 辅色背景 */
+    accent-color:   #585092; /* 强调色（暗紫） */
+    text-color:     #ffffff;
+    text-muted:     #7d79ac;
+}
+
+window {
+    transparency: "real";
+    background-color: @bg-color;
+    text-color: @text-color;
+    border: 2px;
+    border-color: @accent-color;
+    border-radius: 12px;
+    width: 250px;       /* 精致的窄卡片 */
+    x-offset: 0;
+    y-offset: 0;
+}
+
+/* 彻底隐藏掉输入搜索框，因为电源菜单不需要打字 */
+mainbox {
+    background-color: transparent;
+    children: [ listview ];
+    padding: 15px;
+}
+
+listview {
+    background-color: transparent;
+    columns: 1;
+    lines: 5;         /* 刚好对应我们脚本里的 5 个选项 */
+    spacing: 8px;
+    cycle: true;
+    dynamic: true;
+    scrollbar: false;
+}
+
+element {
+    background-color: transparent;
+    text-color: @text-color;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* 未选中时，文字居中对齐 */
+element-text {
+    background-color: transparent;
+    text-color: inherit;
+    cursor: inherit;
+    vertical-align: 0.5;
+    horizontal-align: 0.5; 
+}
+
+/* 选中状态（键盘上下键或鼠标悬停） */
+element selected.normal {
+    background-color: @accent-color;
+    text-color: @bg-color; /* 文字反色，增强对比 */
+}

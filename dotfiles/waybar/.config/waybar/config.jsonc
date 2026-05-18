@@ -1,7 +1,7 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 36,
+    "height": 40,
     "spacing": 4,
     "modules-left": [
         "custom/nixos",
@@ -14,7 +14,7 @@
     "modules-right": [
         "pulseaudio",
         "backlight",
-	"custom/backlight",
+        "custom/backlight",
         "network",
         "battery",
         "tray",
@@ -62,6 +62,22 @@
         "on-click": "brightnessctl set 50%"
     },
 
+     "custom/backlight": {
+    // 图标后置
+    "format": "{percentage}% <span font='Iosevka Nerd Font 14'>{icon}</span>",
+    "format-icons": ["󰃞", "󰃟", "󰃠"],
+    "return-type": "json",
+    
+    // 直接调用我们的物理脚本，传递不同的参数完成对应动作
+    "exec": "~/.config/waybar/scripts/smart-ddc.sh read",
+    "on-scroll-up": "~/.config/waybar/scripts/smart-ddc.sh up",
+    "on-scroll-down": "~/.config/waybar/scripts/smart-ddc.sh down",
+    "on-click": "~/.config/waybar/scripts/smart-ddc.sh click",
+    
+    "interval": 15,
+    "tooltip": false
+    },
+
     "network": {
         "format-wifi": "{essid}  <span font='Iosevka Nerd Font 14'>󰤨</span>",
         "format-ethernet": "ETH  <span font='Iosevka Nerd Font 14'>󰈀</span>",
@@ -82,19 +98,23 @@
         "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
     },
 
+    "tray": {
+        "icon-size": 20,
+        "spacing": 10
+    },
+
     "custom/power": {
         "format": "<span font='Iosevka Nerd Font 14'></span>",
-        "on-click": "wlogout",
+        "on-click": "~/.config/rofi/scripts/powermenu.sh",
         "tooltip": false
-    }
-},
+    }, // 👑 修正：这里原来是 }, 导致了提前闭合，现在改回完美的逗号
 
+    // ==========================================
+    // 中央与新增模块（现在它们完美归位了）
+    // ==========================================
     "clock": {
-        // 默认显示：时钟图标 + 时间
-        "format": "<span font='Iosevka Nerd Font 14' color='#cba6f7'></span> {:%H:%M}",
-        // 点击后展开：日历图标 + 日期
+        "format": "<span font='Iosevka Nerd Font 14' color='#cba6f7'> </span> {:%H:%M}",
         "format-alt": "<span font='Iosevka Nerd Font 14' color='#cba6f7'></span> {:%Y-%m-%d  %H:%M}",
-        // 极其惊艳的高级日历浮窗配置
         "tooltip-format": "<tt><small>{calendar}</small></tt>",
         "calendar": {
             "mode"          : "month",
@@ -109,16 +129,7 @@
                 "today":      "<span color='#f38ba8'><b><u>{}</u></b></span>"
             }
         }
-    },
+    }
 
-    "custom/backlight": {
-        "format": "{percentage}%",
-        "format-icons": ["󰃞", "󰃟", "󰃠"],
-        "return-type": "json",
-        "exec": "val=$(ddcutil getvcp 10 --brief 2>/dev/null | awk '{print $4}'); echo \"{\\\"percentage\\\": $val}\"",
-        "on-scroll-up": "ddcutil setvcp 10 + 10",
-        "on-scroll-down": "ddcutil setvcp 10 - 10",
-        "on-click": "ddcutil setvcp 10 50",
-        "interval": 30,
-        "tooltip": false
-    },
+    
+}
