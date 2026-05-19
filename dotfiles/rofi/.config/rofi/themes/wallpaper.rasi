@@ -1,9 +1,4 @@
-
 @import "~/.cache/by-mgr/hellwal/color-rofi.rasi"
-
-/*
- * 极致贴合 16:9 宽屏网格版 (运用负边距黑魔法)
- */
 
 configuration {
     show-icons: true;
@@ -17,10 +12,10 @@ configuration {
     padding: 0;
 }
 
-/* 适配 4列×3行 的长方形卡片，调整窗口整体宽度 */
+/* 👑 精准的 3列 × 2行 窗口尺寸 */
 window {
-    width: 1140px;  
-    height: 640px;  
+    width: 1260px;   
+    height: 600px;   
     background-color: #1e1e2e;
     border: 2px solid;
     border-color: #cba6f7;
@@ -47,13 +42,13 @@ prompt {
 }
 
 entry {
-    placeholder: "输入目录或文件名过滤壁纸...";
+    placeholder: "输入目录或文件名过滤...";
     placeholder-color: #6c7086;
 }
 
 listview {
-    columns: 4;        
-    lines: 3;          
+    columns: 3;        
+    lines: 2;          
     cycle: true;
     scrollbar: false;  
     spacing: 18px;     
@@ -61,38 +56,42 @@ listview {
 }
 
 /* ================================================= */
-/* 卡片容器：提前布好隐形边框 */
+/* 👑 外边框容器：严格包裹 */
 /* ================================================= */
 element {
     orientation: vertical;  
     padding: 0px;            
     border: 3px solid;       
     border-color: transparent; 
-    border-radius: 12px;     
+    border-radius: 12px;     /* 外圆角 12px */
     background-color: transparent; 
     children: [ element-icon ]; 
 }
 
-/* 选中时点亮边框，且绝对没有多余的背景底色 */
+/* 选中时的纯粹边框 */
 element selected {
     border-color: #cba6f7;   
 }
 
 /* ================================================= */
-/* 终极黑魔法：负边距暴力切割透明死角 */
+/* 👑 图片渲染层：内圆角与负边距像素级对齐 */
 /* ================================================= */
 element-icon {
-    size: 256px;            /* Rofi 强行生成的 256x256 正方形画布 */
+    size: 384px;             
     
     /* 
-     * 核心魔法所在：
-     * 由于图片实际高 144px，我们用负边距强行收缩容器的上下边界。
-     * (256 - 144) / 2 = 56px。
-     * 这一步会让外框直接“咬”在真实的图片边缘上！
+     * 负边距公式：(384 - 180) / 2 = 84px 
+     * 上下收缩，精确切出 16:9 视口
      */
-    margin: -56px 0px;      
+    margin: -84px;      
     
     horizontal-align: 0.5;  
     vertical-align: 0.5;
-    border-radius: 9px;     /* 图片自带圆角，与边框呼应 */
+    
+    /* 
+     * 👑 内外圆角差值匹配魔法：
+     * 外边框 radius (12px) - 边框粗细 (3px) = 内图片 radius (9px)
+     * 这样边框拐角处绝对不会漏出透明缝隙或被死黑覆盖！
+     */
+    border-radius: 9px;     
 }
