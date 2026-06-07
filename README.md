@@ -1,3 +1,7 @@
 # 说明
 
 用于存放 NixOS 而新建的仓库，这一套主题与 Fedora 的理念一致，但实现可能不太相同。
+
+## 预览图
+
+![niri](images/niri.png)
